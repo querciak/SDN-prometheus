@@ -1,2 +1,75 @@
-# prometheus
-Setting up prometheus to monitor Open Network Operating System (ONOS)
+# Monitoring system for an SDN with Prometheus and Grafana
+Setting up [prometheus](https://prometheus.io/) to monitor an SDN Controller ([ONOS](https://opennetworking.org/onos/)) and its topology.
+
+### Set up a topology on mininet
+You can create your topology on mininet following the example file in this repository.
+
+To run it\
+`$ sudo mn --custom path-to-file/topology.py --topo mytopo`
+
+Set all the switches to use OpenFlow protocol\
+`$ sudo ovs-vsctl set bridge <switch-name> protocols=OpenFlow14,OpenFlow13`
+
+Download and Run the Controller on the local machine, e.g.\
+`$ sudo ./onos-2.0.0/apache-karaf-4.2.2/bin/start`\
+`$ sudo ./onos-2.0.0/apache-karaf-4.2.2/bin/client`\
+and inside the onos cli run this final command\
+`app activate org.onosproject.fwd org.onosproject.openflow`
+
+Now connect all the switches to the controller\
+`$ sudo ovs-vsctl set-controller <switch-name> tcp:localhost`\
+and set the secure mode `$ sudo ovs-vsctl set-fail-mode <switch-name> secure`
+
+By running `$ sudo ovs-vsctl show` you can see the topology.\
+And at `http://localhost:8181/onos/ui` you can access the ONOS's UI.
+
+### Set up Prometheus
+[Download Prometheus](https://prometheus.io/download/) in your preferred environment.\
+e.g. `wget https://github.com/prometheus/prometheus/releases/download/v2.24.0/prometheus-2.24.0.linux-amd64.tar.gz`
+
+For linux:\
+`$ cd download-folder`\
+`$ tar -xzf prometheus-<version>.linux-amd64.tar.gz`
+
+To run it:\
+`$ cd download-folder/prometheus-<version>.linux-amd64/`\
+`$ ./prometheus`
+
+Once it is running, you can connect to `localhost:9090` to see the dashboard.
+
+### Set up the exporter
+To have general information about the heath of the machine get the node_exporter. E.g.\
+`wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz`\
+unzip it: `tar -xzf node_exp..[TAB]`\
+`cd node_exp..[TAB]` and run it\
+`./node_exporter`
+
+Then, in the prometheus folder, modify `prometheus.yml` and add a new job for the node_exporter (port 9100).
+```
+- job_name: 'node-exporter'
+    static_configs:
+    - targets: ['localhost:9100']
+```
+
+Run: `kill -s HUP $(pidof prometheus)` to refresh prometheus without any scraping downtime.
+
+### Third
+Run grafana: `./bin/grafana-server`
+On the grafana client: 
+- set up prometheus database
+- import a dashboard (e.g. 1860)
+
+
+### Metrics
+Monitoring VM Traffic Using sFlow:
+ - https://docs.openvswitch.org/en/latest/howto/sflow/
+
+Check these two links for the ovs-exporters:
+ - https://github.com/joatmon08/ovs_exporter
+ - https://github.com/leannetworking/ovs-exporter
+ 
+
+#### References
+Great introduction to set-up prometheus with node exporter [here](https://www.youtube.com/watch?v=4WWW2ZLEg74).
+
+Also check prometheus in Kubernetes cluster [here](https://www.youtube.com/watch?v=QoDqxm7ybLc).
