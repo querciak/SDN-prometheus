@@ -37,14 +37,15 @@ To run it:\
 
 Once it is running, you can connect to `localhost:9090` to see the dashboard.
 
-### Set up the exporter
+### Set up the exporters
+#### Node Exporter
 To have general information about the heath of the machine get the node_exporter. E.g.\
 `wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz`\
 unzip it: `tar -xzf node_exp..[TAB]`\
 `cd node_exp..[TAB]` and run it\
 `./node_exporter`
 
-Then, in the prometheus folder, modify `prometheus.yml` and add a new job for the node_exporter (port 9100).
+Then, in the prometheus folder, modify `prometheus.yml` and add a new job for the node_exporter (port 9100). Check the file in this repo for a full example.
 ```
 - job_name: 'node-exporter'
     static_configs:
@@ -53,23 +54,28 @@ Then, in the prometheus folder, modify `prometheus.yml` and add a new job for th
 
 Run: `kill -s HUP $(pidof prometheus)` to refresh prometheus without any scraping downtime.
 
-### Third
-Run grafana: `./bin/grafana-server`
-On the grafana client: 
-- set up prometheus database
-- import a dashboard (e.g. 1860)
+#### ONOS Exporter
+Set the `onos-config.json` with the required information to access the ONOS controller.
 
+Install the requirements of the onos-exporter with\
+`$ pip install requirements`\
+then run `python3 exporter.py`
 
-### Metrics
-Monitoring VM Traffic Using sFlow:
- - https://docs.openvswitch.org/en/latest/howto/sflow/
+Add another job to the prometheus configuration file (port 9091).
+```
+- job_name: 'onos-exporter'
+    static_configs:
+    - targets: ['localhost:9091']
+```
+Run again `kill -s HUP $(pidof prometheus)`.
+This onos exporter was build from the great work of [Zufar Dhiyaulhaq](https://github.com/zufardhiyaulhaq/onos-prometheus-exporter).
 
-Check these two links for the ovs-exporters:
- - https://github.com/joatmon08/ovs_exporter
- - https://github.com/leannetworking/ovs-exporter
+### Set up Grafana
+Download and run grafana: `./bin/grafana-server`
+On the grafana UI: 
+- add rometheus as data source
+- import the dashboard in this repo.
  
 
 #### References
 Great introduction to set-up prometheus with node exporter [here](https://www.youtube.com/watch?v=4WWW2ZLEg74).
-
-Also check prometheus in Kubernetes cluster [here](https://www.youtube.com/watch?v=QoDqxm7ybLc).
