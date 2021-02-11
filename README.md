@@ -10,7 +10,7 @@ To run it\
 Set all the switches to use OpenFlow protocol\
 `$ sudo ovs-vsctl set bridge <switch-name> protocols=OpenFlow14,OpenFlow13`
 
-Download and Run the Controller on the local machine, e.g.\
+[Download](https://wiki.onosproject.org/display/ONOS/Installing+on+a+single+machine) and Run the Controller on the local machine, following the official documentation. The last steps are:\
 `$ sudo ./onos-2.0.0/apache-karaf-4.2.2/bin/start`\
 `$ sudo ./onos-2.0.0/apache-karaf-4.2.2/bin/client`\
 and inside the onos cli run this final command\
@@ -71,7 +71,7 @@ Run again `$ kill -s HUP $(pidof prometheus)`.
 This onos exporter was build from the great work of [Zufar Dhiyaulhaq](https://github.com/zufardhiyaulhaq/onos-prometheus-exporter).
 
 ### Set up Grafana
-[Download](https://grafana.com/grafana/download) and run Grafana. On the grafana UI: 
+[Download](https://grafana.com/grafana/download) and run Grafana. From the UI: 
 - add prometheus as data source
 - import the dashboard in this repo.
  
