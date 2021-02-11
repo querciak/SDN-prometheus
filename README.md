@@ -20,6 +20,7 @@ Now connect all the switches to the controller\
 `$ sudo ovs-vsctl set-controller <switch-name> tcp:localhost`\
 and set the secure mode `$ sudo ovs-vsctl set-fail-mode <switch-name> secure`
 
+Install [Open vSwitch](https://docs.paloaltonetworks.com/vm-series/10-0/vm-series-deployment/set-up-the-vm-series-firewall-on-kvm/performance-tuning-of-the-vm-series-for-kvm/install-kvm-and-open-vswitch-on-ubuntu-16041-lts.html).\
 By running `$ sudo ovs-vsctl show` you can see the topology.\
 And at `http://localhost:8181/onos/ui` you can access the ONOS's UI.
 
