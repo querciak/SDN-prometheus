@@ -72,7 +72,7 @@ This onos exporter was build from the great work of [Zufar Dhiyaulhaq](https://g
 
 ### Set up Grafana
 [Download](https://grafana.com/grafana/download) and run Grafana. On the grafana UI: 
-- add rometheus as data source
+- add prometheus as data source
 - import the dashboard in this repo.
  
 
