@@ -71,8 +71,7 @@ Run again `$ kill -s HUP $(pidof prometheus)`.
 This onos exporter was build from the great work of [Zufar Dhiyaulhaq](https://github.com/zufardhiyaulhaq/onos-prometheus-exporter).
 
 ### Set up Grafana
-Download and run grafana: `$ ./bin/grafana-server`\
-On the grafana UI: 
+[Download](https://grafana.com/grafana/download) and run Grafana. On the grafana UI: 
 - add rometheus as data source
 - import the dashboard in this repo.
  
